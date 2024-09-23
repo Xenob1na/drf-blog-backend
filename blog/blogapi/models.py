@@ -1,7 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Category(models.Model):
+    title = models.CharField(max_length=255, verbose_name='Категория', blank=True, null=True)
+
+    class Meta:
+        ordering = ('title',)
+
 class Post(models.Model):
+    category = models.ForeignKey(Category, related_name='Категория', on_delete=models.CASCADE)
     title = models.CharField(max_length=255, verbose_name='Заголовок', blank=True, null=True)
     body = models.TextField(verbose_name='Текст', blank=True, null=True)
     description = models.TextField(verbose_name='Описание', blank=True, null=True)
