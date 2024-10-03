@@ -15,5 +15,5 @@ class PostDetailSerializer(ModelSerializer):
 class CategorySerializer(ModelSerializer):
     class Meta:
         model = Category
-        fields = ["id", "title"]        
+        fields = ["id", "title"]   
         
