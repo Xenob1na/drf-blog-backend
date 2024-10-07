@@ -5,7 +5,7 @@ from rest_framework import status, authentication, permissions
 from .models import Comment
 from blogapi.models import Post
 from .serializers import CommentSerializer
-from .forms import CommentForm
+from .forms import CommentForm, CommentUpdateForm
 
 
 class CommentsListAPIView(APIView):
@@ -28,7 +28,16 @@ class CreateCommentAPIView(APIView):
             return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-    
+ 
+ 
+class UpdateCommentAPIView(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    def put(self, request, pk):
+        comment = Comment.objects.get(pk=pk, created_by=request.user)
+        form = CommentUpdateForm(request.data, instance=comment)
+        form.save()
+        return Response(status=status.HTTP_200_OK)    
     
 class DeleteCommentAPIView(APIView):
     authentication_classes = [authentication.TokenAuthentication]
